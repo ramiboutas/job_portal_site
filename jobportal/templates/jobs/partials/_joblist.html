@@ -1,0 +1,59 @@
+<div class="row">
+{% for job in jobs %}
+<div class="col-md-12 ftco-animate">
+  <div class="job-post-item bg-white p-4 d-block d-md-flex align-items-center">
+
+    <div class="mb-4 mb-md-0 mr-5">
+     <div class="job-post-item-header d-flex align-items-center">
+       <h2 class="mr-3 text-black h4">{{ job.title }}</h2>
+        <div class="badge-wrap">
+            <span {% if job.type == 'full_time' %}
+                    class="bg-warning text-white badge py-2 px-3"
+
+                  {% elif job.type == 'part_time' %}
+                    class="bg-info text-white badge py-2 px-3"
+
+                  {% elif job.type == 'freelance' %}
+                    class="bg-secondary text-white badge py-2 px-3"
+
+                  {% elif job.type == 'internship' %}
+                    class="bg-primary text-white badge py-2 px-3"
+
+                  {% elif job.type == 'temporary' %}
+                    class="bg-danger text-white badge py-2 px-3"
+                  {% endif %}> {{ job.get_type_display }}
+            </span>
+       </div>
+     </div>
+     <div class="job-post-item-body d-block d-md-flex">
+       <div class="mr-3"><span class="icon-layers"></span> <a href="#">{{ job.company }}</a></div>
+       <div><span class="icon-my_location"></span> <span>{{ job.location }}</span></div>
+     </div>
+    </div>
+
+    <div class="ml-auto d-flex">
+      <a href="#" class="btn btn-primary py-2 mr-1">Apply Job</a>
+        {% if job.id in wish_list %}
+          <a href="javascripts:void(0);"
+            id="jobwl{{ job.id }}"
+            title="Remove from my wish list"
+            data-wl="1"
+            onclick="addorremove({{ job.id }})"
+            class="btn btn-danger rounded-circle btn-favorite d-flex align-items-center">
+            <span class="icon-heart"></span>
+          </a>
+        {% else %}
+          <a href="javascripts:void(0);"
+            id="jobwl{{ job.id }}"
+            title="Add to my wish list"
+            data-wl="0"
+            onclick="addorremove({{ job.id }})"
+            class="btn btn-primary rounded-circle btn-favorite d-flex align-items-center">
+            <span class="icon-heart"></span>
+          </a>
+        {% endif %}
+    </div>
+  </div>
+</div> <!-- end -->
+{% endfor %}
+ </div>

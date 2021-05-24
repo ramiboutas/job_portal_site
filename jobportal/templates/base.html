@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- head, meta data, css sheets, so on -->
+  {% include "partials/_head.html" %}
+</head>
+
+<body>
+  <!-- navbar -->
+  {% include "partials/_navbar.html" %}
+
+  <!-- main content -->
+  {% block content %} {% endblock %}
+
+  <!-- subscribe section -->
+  {% include "partials/_subscribesection.html" %}
+
+  <!-- footer -->
+  {% include "partials/_footer.html" %}
+
+  <!-- loader -->
+  {% include "partials/_loader.html" %}
+
+  <!-- scripts -->
+  {% include "partials/_scripts.html" %}
+
+</body>
+</html>
