@@ -1,0 +1,9 @@
+<div class="row">
+    {% for category in categories %}
+  <div class="col-md-3 ftco-animate">
+    <ul class="category">
+      <li><a href="#">{{ category.title }} <span class="number" data-number="{{ category.job_count }}">0</span></a></li>
+    </ul>
+  </div>
+    {% endfor %}
+</div>
