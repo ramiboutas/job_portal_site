@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +12,17 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
     success_url = '/'
     success_message = _('Your user account has been created')
 
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user_type = form.cleaned_data['type']
+
+        if user_type == 'is_employee':
+            user.is_employee = True
+        elif user_type == 'is_employer':
+            user.is_employer = True
+
+        user.save()
+        return  redirect(self.success_url)
 
 class UserLoginView(CreateView):
     pass
