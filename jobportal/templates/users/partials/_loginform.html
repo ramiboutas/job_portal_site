@@ -1,35 +1,44 @@
 <div class="col-md-12 col-lg-8 mb-5">
-  
-  <form action="#" class="p-5 bg-white" method="post">
-     {% csrf_token %}
-       {% if form.errors %}
-       <div class="alert alert-danger alert-dismissible" role="aler">
-           <div id="form_errors">
-               {% for key,value in form.errors.items %}
-               <span class="fieldWrapper"> {{ key }} : {{ value }} </span>
-               {% endfor %}
-           </div>
-           <button type="button" class="close" data-dismiss="alert" aria-hidden="Close">
-               <span aria-hidden="true">&times</span>
-           </button>
-       </div>
-     {% endif %}
-    {% for field in form.visible_fields|slice:"5" %}
+  {% if not user.is_authenticated %}
+    <form action="#" class="p-5 bg-white" method="post">
+       {% csrf_token %}
+         {% if form.errors %}
+         <div class="alert alert-danger alert-dismissible" role="aler">
+             <div id="form_errors">
+                 {% for key,value in form.errors.items %}
+                 <span class="fieldWrapper"> {{ key }} : {{ value }} </span>
+                 {% endfor %}
+             </div>
+             <button type="button" class="close" data-dismiss="alert" aria-hidden="Close">
+                 <span aria-hidden="true">&times</span>
+             </button>
+         </div>
+       {% endif %}
+      {% for field in form.visible_fields|slice:"5" %}
+      <div class="row form-group">
+        <div class="col-md-12 mb-3 mb-md-0">
+          <label class="font-weight-bold" for="fullname">{{ field.label }}</label>
+          <input type="{{ field.field.widget.input_type }}" id="fullname" class="form-control" placeholder="{{ field.label }}" name="{{ field.html_name }}">
+        </div>
+      </div>
+
+    {% endfor %}
+
+        <div class="row form-group">
+        <div class="col-md-12">
+          <input type="submit" value="Login" class="btn btn-primary  py-2 px-5">
+        </div>
+      </div>
+
+    </form>
+  {% else %}
+
     <div class="row form-group">
       <div class="col-md-12 mb-3 mb-md-0">
-        <label class="font-weight-bold" for="fullname">{{ field.label }}</label>
-        <input type="{{ field.field.widget.input_type }}" id="fullname" class="form-control" placeholder="{{ field.label }}" name="{{ field.html_name }}">
+        <p class="font-weight-bold" style="color: red;">You are already logged in</p>
+        <p>but you can <a href="{% url 'users:logout' %}">logout</a> </p>
       </div>
     </div>
-
-  {% endfor %}
-
-      <div class="row form-group">
-      <div class="col-md-12">
-        <input type="submit" value="Login" class="btn btn-primary  py-2 px-5">
-      </div>
-    </div>
-
-  </form>
+  {% endif %}
 
 </div>

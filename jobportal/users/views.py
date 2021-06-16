@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
 from django.utils.translation import gettext_lazy as _
 
@@ -26,4 +26,7 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
         return  redirect(self.success_url)
 
 class UserLoginView(LoginView):
+    template_name = 'users/user-login.html'
+
+class UserLogoutView(LogoutView):
     template_name = 'users/user-login.html'
