@@ -2,8 +2,12 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from PIL import Image
 from ckeditor.fields import RichTextField
+
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -51,7 +55,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='profile')
-    image = models.ImageField(upload_to="media/users")
+    image = models.ImageField(upload_to="media/users", default="media/users/profile.png")
     birthday = models.DateField(default=None, blank=True, null=True)
     location = models.CharField(max_length=100, blank=True)
     resume = RichTextField(blank=True)
@@ -63,7 +67,20 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
         img = Image.open(self.image)
-        if img.height > 200 or im.width > 200:
+        if img.height > 200 or img.width > 200:
             new_size = (200, 200)
             img.thumbnail(new_size)
             img.save(self.image.path)
+
+
+@receiver(models.signals.post_save, sender=Account)
+def post_save_user_signal(sender, instance, created, **kwargs):
+    if created:
+        instance.save()
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+post_save.connect(create_user_profile, sender=Account)
