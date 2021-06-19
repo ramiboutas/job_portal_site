@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Account
+from .models import Account, Profile
 
 
 class AdminAccount(UserAdmin):
@@ -31,3 +31,4 @@ class AdminAccount(UserAdmin):
 
 
 admin.site.register(Account, AdminAccount)
+admin.site.register(Profile)
