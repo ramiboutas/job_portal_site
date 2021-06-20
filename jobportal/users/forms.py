@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from .models import Account
+from .models import Account, Profile
 
 ACCOUNT_TYPE_OPTIONS = [
     ('is_employee', _('Employee')),
@@ -15,3 +15,12 @@ class AccountRegisterForm(UserCreationForm):
     class Meta:
         model = Account
         fields = ('email', 'first_name', 'last_name') # the password will be created by UserCreationForm or something like that
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ('user', )
+
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'})
+        }

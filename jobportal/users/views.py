@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.utils.translation import gettext_lazy as _
 
-from .forms import AccountRegisterForm
-
+from .forms import AccountRegisterForm, UserUpdateForm
+from .models import Profile
 
 class UserRegisterView(SuccessMessageMixin, CreateView):
     template_name = 'users/user-register.html'
@@ -25,8 +25,17 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
         user.save()
         return  redirect(self.success_url)
 
+
 class UserLoginView(LoginView):
     template_name = 'users/user-login.html'
 
+
 class UserLogoutView(LogoutView):
     template_name = 'users/user-login.html'
+
+
+class UserUpdateView(SuccessMessageMixin, UpdateView):
+    model = Profile
+    form_class = UserUpdateForm
+    success_message = _('You updated your profile')
+    template_name = 'users/user-update.html'
