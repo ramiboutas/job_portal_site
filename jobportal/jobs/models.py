@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
+from ckeditor.fields import RichTextField
 
 from jobportal import settings
 
@@ -31,7 +32,7 @@ class Job(models.Model):
     company = models.CharField(max_length=300)
     type = models.CharField(max_length=20, blank=False, default=None, choices=JOB_TYPES_OPTIONS)
     location = models.CharField(max_length=50, blank=False, default=None)
-    description = models.TextField(blank=False, default=None)
+    description = RichTextField(blank=False, default=None)
     publishing_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(default=None, editable=False)
     employer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
